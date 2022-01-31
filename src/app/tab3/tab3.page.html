@@ -1,0 +1,48 @@
+<div class="spacer-top"></div>
+<ion-content [fullscreen]="true">
+  <ion-fab horizontal="end" vertical="top" slot="fixed" edge>
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list>
+      <ion-fab-button (click)="changePasswordModalTrigger()" color="light">
+        <ion-icon name="key-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="editProfileModalTrigger()" color="light">
+        <ion-icon name="settings-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="accountLogout()" color="light">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <div class="main">
+    <ion-card *ngFor="let property of savePropertyData">
+      <ion-card-header>
+        <div *ngIf="property.prop_isForRent == 0; else saleBlock">
+          <ion-card-title>{{ property.prop_name }}</ion-card-title>
+          <ion-badge color="tertiary">For Rent</ion-badge>
+        </div>
+        <ng-template #saleBlock>
+          <ion-card-title>{{ property.prop_name }}</ion-card-title>
+          <ion-badge color="success">For Sale</ion-badge>
+        </ng-template>
+      </ion-card-header>
+    
+      <ion-card-content>
+        <p>{{ property.prop_description}}</p>
+        <p><ion-icon name="location-outline"></ion-icon> {{ property.prop_address }}</p>
+        <p><ion-icon name="call-outline"></ion-icon> {{  property.acc_phone  }}</p>
+        <p><ion-icon name="person-outline"></ion-icon> {{ property.acc_fname }} {{ property.acc_lname }}</p>
+        <p>₱ {{ property.prop_price }}</p>
+
+        <div class="display-end">
+          <ion-button color="warning" (click)="userUnsaveProperty(property.save_id)">UNSAVE</ion-button>
+          <ion-button color="tertiary" (click)="setAppointmentModalTrigger(property.prop_id)">SET APPOINTMENT</ion-button>
+        </div>
+      </ion-card-content>
+    </ion-card>
+  </div>
+
+</ion-content>

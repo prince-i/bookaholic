@@ -1,0 +1,11 @@
+<ion-content>
+  <div class="main">
+    <img class="logo" src="/assets/logo_book.png">
+    <ion-input class="margin-field" placeholder="Input Email" [(ngModel)]="email" type="email"></ion-input>
+    <ion-input class="margin-field" placeholder="Input Password" [(ngModel)]="password" type="password"></ion-input>
+  
+    <ion-button class="margin-field" color="tertiary" expand="block" (click)="accountLogin()">LOGIN</ion-button>
+    <hr class="rounded">
+    <ion-button class="margin-field" color="success" expand="block" (click)="redirectToRegister()">REGISTER</ion-button>
+  </div>
+</ion-content>

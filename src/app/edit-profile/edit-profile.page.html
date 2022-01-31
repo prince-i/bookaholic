@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismissModal()"><ion-icon slot="icon-only" name="arrow-back"></ion-icon></ion-button>
+    </ion-buttons>
+    <ion-title>EDIT PROFILE</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="main">
+    <div *ngIf="userDataLoaded == false; else editBlock">
+    </div>
+    <ng-template #editBlock>
+      <ion-input class="margin-field" [(ngModel)]="fname" type="text"></ion-input>
+      <ion-input class="margin-field" [(ngModel)]="lname" type="text"></ion-input>
+      <ion-input class="margin-field" [(ngModel)]="phone" type="text"></ion-input>
+      <ion-button class="margin-field" expand="block" (click)="editProfile()">EDIT PROFILE</ion-button>
+    </ng-template>
+
+  </div>
+</ion-content>

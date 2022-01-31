@@ -1,0 +1,23 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismissModal()"><ion-icon slot="icon-only" name="arrow-back"></ion-icon></ion-button>
+    </ion-buttons>
+    <ion-title>SET APPOINTMENT</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div class="main">
+    <div *ngIf="propertyLoaded == false; else appointmentBlock">
+      <!-- For errror prevention -->
+    </div>
+    <ng-template #appointmentBlock>
+      <h4 class="margin-field add-margin">{{ property[0].prop_name }}</h4> 
+      <ion-datetime class="margin-field" placeholder="Preferred Appointment Date" displayFormat="MMMM-DD-YYYY" [(ngModel)]="date"></ion-datetime>
+      <ion-datetime class="margin-field" placeholder="Preferred Time" displayFormat="h:mm a" [(ngModel)]="time"></ion-datetime>
+      
+      <ion-button class="margin-field" expand="block" (click)="userSetAppointment()">SET APPOINTMENT</ion-button>
+    </ng-template>
+  </div>
+</ion-content>

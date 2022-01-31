@@ -1,0 +1,187 @@
+<div class="spacer-top"></div>
+<ion-content [fullscreen]="true">
+  <ion-fab horizontal="end" vertical="bottom" slot="fixed">
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list side="top">
+      <ion-fab-button (click)="changePasswordModalTrigger()" color="light">
+        <ion-icon name="key-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="editProfileModalTrigger()" color="light">
+        <ion-icon name="settings-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="accountLogout()" color="light">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+  
+  <div class="main">
+    <div *ngIf ="userRole == 0; else sellerBlock">
+      <!-- User Side -->
+  
+      <ion-input class="margin-field" placeholder="Search Property" (keyup)="userSearchProperties()" [(ngModel)]="searchInput" type="text"></ion-input>
+      <ion-select class="margin-field-select" (ionChange)="userFilterProperties($event.target.value)" [interfaceOptions]="customAlertOptions" interface="action-sheet" placeholder="Filter Properties">
+        <ion-select-option value="">ALL</ion-select-option>
+        <ion-select-option value="1">FOR SALE</ion-select-option>
+        <ion-select-option value="0">FOR RENT</ion-select-option>
+      </ion-select>
+
+      <ion-card *ngFor="let property of userPropertyData">
+        <img src="{{ property.prop_image }}" />
+        <ion-card-header>
+          <div *ngIf="property.prop_isForRent == 0; else saleBlock">
+            <ion-card-title>{{ property.prop_name }}</ion-card-title>
+            <ion-badge color="tertiary">For Rent</ion-badge>
+          </div>
+          <ng-template #saleBlock>
+            <ion-card-title>{{ property.prop_name }}</ion-card-title>
+            <ion-badge color="success">For Sale</ion-badge>
+          </ng-template>
+        </ion-card-header>
+      
+        <ion-card-content>
+          <p>{{ property.prop_description}}</p>
+          <p><ion-icon name="location-outline"></ion-icon> {{ property.prop_address }}</p>
+          <p><ion-icon name="call-outline"></ion-icon> {{  property.acc_phone  }}</p>
+          <p><ion-icon name="person-outline"></ion-icon> {{ property.acc_fname }} {{ property.acc_lname }}</p>
+          <p>₱ {{ property.prop_price }}</p>
+
+          <div class="display-end">
+            <ion-button color="success" (click)="userSaveProperty(property.prop_id)">SAVE</ion-button>
+            <ion-button color="tertiary" (click)="setAppointmentModalTrigger(property.prop_id)">SET APPOINTMENT</ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <ng-template #sellerBlock>
+      <div *ngIf="userRole == 1; else adminBlock">
+        <!-- Seller Side -->
+        <ion-button class="add-button-margin" color="tertiary" (click)="addPropertyModalTrigger()"><ion-icon class="add-margin" name="add-outline"></ion-icon>ADD PROPERTY</ion-button>
+    
+        <ion-card *ngFor="let property of propertyData">
+          <ion-card-header>
+            <ion-card-title>{{ property.prop_name }}</ion-card-title>
+            <ion-badge color="tertiary">{{ property.prop_status }}</ion-badge>
+          </ion-card-header>
+        
+          <ion-card-content>
+            <p>
+              {{ property.prop_description}}
+            </p>
+            <p>₱ {{ property.prop_price }}</p>
+ 
+            <div class="display-end">
+              <ion-button color="danger" (click)="sellerArchiveProperty(property.prop_id)">DEL</ion-button>
+              <ion-button color="secondary" (click)="sellerSoldProperty(property.prop_id)">SOLD</ion-button>
+              <ion-button color="primary" (click)="editPropertyModalTrigger(property.prop_id)">EDIT</ion-button>
+              <ion-button color="tertiary" (click)="sellerPostProperty(property.prop_id)">POST</ion-button>
+            </div>
+          </ion-card-content>
+        </ion-card>
+      </div>
+      <ng-template #adminBlock>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="12">
+              <ion-card>
+                <ion-card-header>
+                  <ion-card-title>Properties Sold</ion-card-title>
+                </ion-card-header>
+                <ion-card-content>
+                    <ion-row>
+                      <ion-col size="2">
+                        <ion-icon class="large-icon" name="home-outline"></ion-icon>
+                      </ion-col>
+                      <ion-col size="10">
+                        <p class="number-count">{{ totalSold }}</p>
+                      </ion-col>
+                    </ion-row>
+                </ion-card-content>
+              </ion-card>
+            </ion-col>
+
+              <ion-col size="12">
+                <ion-card>
+                  <ion-card-header>
+                    <ion-card-title>Total Sold Sales</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                      <ion-row>
+                        <ion-col size="2">
+                          <ion-icon class="large-icon" name="cash-outline"></ion-icon>
+                        </ion-col>
+                        <ion-col size="10">
+                          <p class="number-count">{{ totalSoldSales }}</p>
+                        </ion-col>
+                      </ion-row>
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+            </ion-row>  
+
+            <ion-row>
+              <ion-col size="12">
+                <ion-card>
+                  <ion-card-header>
+                    <ion-card-title>Properties Rented</ion-card-title>
+                  </ion-card-header>
+                  <ion-card-content>
+                      <ion-row>
+                        <ion-col size="2">
+                          <ion-icon class="large-icon" name="home-outline"></ion-icon>
+                        </ion-col>
+                        <ion-col size="10">
+                          <p class="number-count">{{ totalRented }}</p>
+                        </ion-col>
+                      </ion-row>
+                  </ion-card-content>
+                </ion-card>
+              </ion-col>
+              </ion-row>  
+
+              <ion-row>
+                <ion-col size="12">
+                  <ion-card>
+                    <ion-card-header>
+                      <ion-card-title>No. of Sellers</ion-card-title>
+                    </ion-card-header>
+                    <ion-card-content>
+                        <ion-row>
+                          <ion-col size="2">
+                            <ion-icon class="large-icon" name="pricetags-outline"></ion-icon>
+                          </ion-col>
+                          <ion-col size="10">
+                            <p class="number-count">{{ totalSellers }}</p>
+                          </ion-col>
+                        </ion-row>
+                    </ion-card-content>
+                  </ion-card>
+                </ion-col>
+    
+                  <ion-col size="12">
+                    <ion-card>
+                      <ion-card-header>
+                        <ion-card-title>No. of Users</ion-card-title>
+                      </ion-card-header>
+                      <ion-card-content>
+                          <ion-row>
+                            <ion-col size="2">
+                              <ion-icon class="large-icon" name="person-outline"></ion-icon>
+                            </ion-col>
+                            <ion-col size="10">
+                              <p class="number-count">{{ totalUsers }}</p>
+                            </ion-col>
+                          </ion-row>
+                      </ion-card-content>
+                    </ion-card>
+                  </ion-col>
+                </ion-row>  
+
+        </ion-grid>
+      </ng-template>
+    </ng-template>
+  </div>
+</ion-content>

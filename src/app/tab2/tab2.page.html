@@ -1,0 +1,97 @@
+<div class="spacer-top"></div>
+<ion-content [fullscreen]="true">
+  <ion-fab horizontal="end" vertical="top" slot="fixed" edge>
+    <ion-fab-button>
+      <ion-icon name="add"></ion-icon>
+    </ion-fab-button>
+    <ion-fab-list>
+      <ion-fab-button (click)="changePasswordModalTrigger()" color="light">
+        <ion-icon name="key-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="editProfileModalTrigger()" color="light">
+        <ion-icon name="settings-outline"></ion-icon>
+      </ion-fab-button>
+      <ion-fab-button (click)="accountLogout()" color="light">
+        <ion-icon name="log-out-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab-list>
+  </ion-fab>
+
+  <div class="main">
+    <div *ngIf ="userRole == 0; else sellerBlock">
+
+      <ion-select class="margin-field-select" (ionChange)="userFilterAppointments($event.target.value)" [interfaceOptions]="customAlertOptions" interface="action-sheet" placeholder="Filter Appointments">
+        <ion-select-option value="">ALL</ion-select-option>
+        <ion-select-option value="0">PENDING</ion-select-option>
+        <ion-select-option value="1">APPROVED</ion-select-option>
+      </ion-select>
+
+      <ion-card *ngFor="let appointment of userAppointmentData">
+        <ion-card-header>
+            <ion-card-title>{{ appointment.prop_name }}</ion-card-title>
+            <div *ngIf="appointment.app_status == 0; else approvedBlock">
+              <ion-badge>Pending Approval</ion-badge>
+            </div>
+            <ng-template #approvedBlock>
+              <div *ngIf="appointment.app_status == 1; else cancelledBlock">
+                <ion-badge>Approved</ion-badge>
+              </div>
+              <ng-template #cancelledBlock>
+                <ion-badge>Declined / Cancelled</ion-badge>
+              </ng-template>
+            </ng-template>
+        </ion-card-header>
+      
+        <ion-card-content>
+          <p>{{ appointment.prop_description}}</p>
+          <p><ion-icon name="calendar-outline"></ion-icon>  {{ appointment.app_date }}</p>
+          <p><ion-icon name="time-outline"></ion-icon>  {{ appointment.app_time }}</p>
+          <p>₱ {{ appointment.prop_price }}</p>
+
+          <div class="display-end">
+            <ion-button color="danger" (click)="userCancelAppointment(appointment.app_id)">CANCEL</ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </div>
+
+    <ng-template #sellerBlock>
+      <ion-select class="margin-field-select" (ionChange)="sellerFilterAppointments($event.target.value)" [interfaceOptions]="customAlertOptions" interface="action-sheet" placeholder="Filter Appointments">
+        <ion-select-option value="">ALL</ion-select-option>
+        <ion-select-option value="0">PENDING</ion-select-option>
+        <ion-select-option value="1">APPROVED</ion-select-option>
+        <ion-select-option value="3">DECLINED</ion-select-option>
+      </ion-select>
+
+      <ion-card *ngFor="let appointment of sellerAppointmentData">
+        <ion-card-header>
+            <ion-card-title>{{ appointment.prop_name }}</ion-card-title>
+            <div *ngIf="appointment.app_status == 0; else approvedBlock">
+              <ion-badge>Pending Approval</ion-badge>
+            </div>
+            <ng-template #approvedBlock>
+              <div *ngIf="appointment.app_status == 1; else cancelledBlock">
+                <ion-badge>Approved</ion-badge>
+              </div>
+              <ng-template #cancelledBlock>
+                <ion-badge>Declined / Cancelled</ion-badge>
+              </ng-template>
+            </ng-template>
+        </ion-card-header>
+      
+        <ion-card-content>
+          <p>{{ appointment.prop_description}}</p>
+          <p><ion-icon name="calendar-outline"></ion-icon>  {{ appointment.app_date }}</p>
+          <p><ion-icon name="time-outline"></ion-icon>  {{ appointment.app_time }}</p>
+          <p>₱ {{ appointment.prop_price }}</p>
+          <p>Appointment by: {{ appointment.acc_fname }} {{ appointment.acc_lname }}</p>
+          <p>Prospect Number: {{ appointment.acc_phone }}</p>
+          <div class="display-end">
+            <ion-button color="danger" (click)="sellerDeclineAppointment(appointment.app_id)">DECLINE</ion-button>
+            <ion-button color="tertiary" (click)="sellerApproveAppointment(appointment.app_id)">APPROVE</ion-button>
+          </div>
+        </ion-card-content>
+      </ion-card>
+    </ng-template>
+  </div>
+</ion-content>

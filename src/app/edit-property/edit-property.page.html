@@ -1,0 +1,35 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="dismissModal()"><ion-icon slot="icon-only" name="arrow-back"></ion-icon></ion-button>
+    </ion-buttons>
+    <ion-title>EDIT PROPERTY</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <div *ngIf="lastValueLoaded == false; else editBlock">
+    <!-- For Preventing Errors of late Loaded Data -->
+  </div>
+  <ng-template #editBlock>
+    <div class="center">
+      <img [src]="imgSrc" class="imagetoUp" /><br>
+    </div>
+    <ion-input type="file" (change)="onUploadHandler($event)" 
+    name="img" #Image accept="image/*" class="uploader-class" ></ion-input>
+    <ion-input class="margin-field" placeholder="Input Name" [(ngModel)]="name" type="text"></ion-input>
+    <ion-textarea placeholder="Input Description" class="margin-field" [(ngModel)]="desc"></ion-textarea>
+    <ion-input class="margin-field" placeholder="Input Price" [(ngModel)]="price" type="number"></ion-input>
+    <ion-input class="margin-field" placeholder="Input Address" [(ngModel)]="address" type="text"></ion-input>
+    <ion-select class="margin-field-select" [(ngModel)]="forRent" placeholder="Post as">
+      <ion-select-option value="0">For Rent</ion-select-option>
+      <ion-select-option value="1">For Sale </ion-select-option>
+    </ion-select>
+    <ion-select class="margin-field-select" [(ngModel)]="type" placeholder="Property Type">
+      <ion-select-option *ngFor="let type of propertyTypesData" value="{{ type.type_id }}"><span>{{ type.type_name }}</span></ion-select-option>
+    </ion-select>
+  
+    <ion-button class="margin-field" expand="block" (click)="sellerEditProperty()">EDIT PROPERTY</ion-button>
+  </ng-template>
+
+</ion-content>

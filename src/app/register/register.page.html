@@ -1,0 +1,19 @@
+<ion-content>
+  <div class="main">
+    <p class="logo">Create an account</p>
+    <ion-input class="margin-field" placeholder="Input Firstname" [(ngModel)]="fname" type="text"></ion-input>
+    <ion-input class="margin-field" placeholder="Input Lastname"[(ngModel)]="lname" type="text"></ion-input>
+    <ion-input class="margin-field" placeholder="Input Mobile Number" [(ngModel)]="mobile" type="text"></ion-input>
+    <ion-select class="margin-field-select" [(ngModel)]="role" placeholder="Register as">
+      <ion-select-option value="0">Renting / Buying</ion-select-option>
+      <ion-select-option value="1">Seller / Owner</ion-select-option>
+    </ion-select>
+    <ion-input class="margin-field" placeholder="Input Email" [(ngModel)]="email"  type="email"></ion-input>
+    <ion-input class="margin-field" placeholder="Input Password" [(ngModel)]="password" type="password"></ion-input>
+    <ion-input class="margin-field" placeholder="Confirm Password" [(ngModel)]="conf_password" type="password"></ion-input>
+        
+    <ion-button class="margin-field" color="tertiary" expand="block" (click)="accountRegister()">REGISTER</ion-button>
+    <hr class="rounded">
+    <ion-button class="margin-field" color="success" expand="block" (click)="redirectToLogin()">LOGIN</ion-button>
+  </div>
+</ion-content>

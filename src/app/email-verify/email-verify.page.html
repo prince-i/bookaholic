@@ -1,0 +1,10 @@
+<ion-content>
+  <div class="main">
+    <p class="logo">HomeSeek</p>
+    <ion-input class="margin-field" placeholder="Input OTP" [(ngModel)]="otp" type="text"></ion-input>
+    <p class="message-text">*OTP is sent to your email</p>
+    
+    <ion-button class="margin-field" color="success" expand="block" (click)="resendOTP()">RESEND OTP</ion-button>
+    <ion-button class="margin-field" color="tertiary" expand="block" (click)="userVerifyAccount()">VERIFY</ion-button>
+  </div>
+</ion-content>
